@@ -1,0 +1,38 @@
+#! /bin/bash
+#Author : - Kapil Chowhan
+#Date : - 08/02/2022
+
+#Checking if this script is being executed as ROOT. For maintaining proper directory structure, this script must be run from a root user.
+if [ $EUID != 0 ]
+then
+  echo "Please run this script as root so as to see all details! Better run with sudo."
+  exit 1
+fi
+
+#create a temporary file for output
+tmpfile=/tmp/mail.$$.ouptput
+>/tmp/mail.$$.output
+
+#collecting commands output
+echo "System uptime is :" >> $tmpfile
+uptime >> $tmpfile
+echo "System top process :" >> $tmpfile
+top -n 1 >> $tmpfile
+
+echo "system memory is : " >> $tmpfile
+free -h >> $tmpfile
+
+echo " Cluster status is :" >> $tmpfile
+clustat >> $tmpfile
+
+echo "system filesystem status:" >> $tmpfile
+df -h >> $tmpfile
+
+echo "when was system last rebooted"
+last | grep -i Reboot >> $tmpfile
+
+mailid="kapil.chowhan@mymailid.com"
+
+
+mail -s "System Health status report" $mailid < $tmpfile
+
