@@ -28,7 +28,7 @@ clustat >> $tmpfile
 echo "system filesystem status:" >> $tmpfile
 df -h >> $tmpfile
 
-echo "when was system last rebooted"
+echo "when was system last rebooted" >> $tmpfile
 last | grep -i Reboot >> $tmpfile
 
 mailid="kapil.chowhan@mymailid.com"
